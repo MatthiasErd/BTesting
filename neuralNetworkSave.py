@@ -106,7 +106,7 @@ def build_model(input_shape, learning_rate, error="sparse_categorical_crossentro
     model.add(keras.layers.Dropout(0.3))
 
     # softmax classifier
-    model.add(keras.layers.Dense(NUM_KEYWORDS, activation="softmax")) #[output e.g = 0.1, 0.9]
+    model.add(keras.layers.Dense(NUM_KEYWORDS, activation="softmax")) #[output e.g = 0.1, 0.9]  NUM_KEYWORDS = 2 for kick/snare 
 
     # compile
     optimiser = keras.optimizers.Adam(learning_rate=learning_rate)
