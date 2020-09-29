@@ -61,14 +61,12 @@ def load_dataset(data_path):
 
 def get_data_splits(data_path, test_size=0.1, test_validation=0.1):
 
-    # load dataset
     X, y = load_dataset(data_path)
 
-    # create train/validation/test splits
+    # train validation and split stuff
     X_train, X_test, y_train, y_test = train_test_split(X,y, test_size=test_size)
     X_train, X_validation, y_train, y_validation = train_test_split(X_train, y_train,
                                                                     test_size=test_validation)
-
 
     #convert inputs from 2d to 3d arrays (segments, 13)
     X_train = X_train[..., np.newaxis]
@@ -81,29 +79,26 @@ def get_data_splits(data_path, test_size=0.1, test_validation=0.1):
 
 def build_model(input_shape, learning_rate, error="sparse_categorical_crossentropy"):
 
-    #build network
     model = keras.Sequential()
 
-    #conv layer 1
+    #layer 1
     model.add(keras.layers.Conv2D(64, (3, 3), activation="relu",
                                   input_shape=input_shape,
                                   kernel_regularizer=keras.regularizers.l2(0.001), padding='same'))
     model.add(keras.layers.BatchNormalization())
     model.add(keras.layers.MaxPooling2D((3, 3), strides=(2, 2), padding='same'))
 
-    #conv layer 2
+    #layer 2
     model.add(keras.layers.Conv2D(32, (3, 3), activation="relu",
                                   kernel_regularizer=keras.regularizers.l2(0.001), padding='same'))
     model.add(keras.layers.BatchNormalization())
     model.add(keras.layers.MaxPooling2D((3, 3), strides=(2, 2), padding='same'))
 
-    #conv layer 3
+    #layer 3
     model.add(keras.layers.Conv2D(32, (2, 2), activation="relu",
                                   kernel_regularizer=keras.regularizers.l2(0.001), padding='same'))
     model.add(keras.layers.BatchNormalization())
     model.add(keras.layers.MaxPooling2D((2, 2), strides=(2, 2), padding='same'))
-
-
 
     # flatten the output and feed it into a dense layer
     model.add(keras.layers.Flatten())
@@ -117,7 +112,6 @@ def build_model(input_shape, learning_rate, error="sparse_categorical_crossentro
     optimiser = keras.optimizers.Adam(learning_rate=learning_rate)
     model.compile(optimizer=optimiser, loss=error, metrics=["accuracy"])
 
-    # print model overview
     model.summary()
 
     return model
@@ -143,13 +137,13 @@ def main():
     print("\nTest loss: {}, test accuracy: {}".format(test_error, 100*test_accuracy))
 
 
-    # inputs:  ['dense_input'] (not sure about all of that yet)
+    # inputs:  ['dense_input'] (not sure about that)
     print('inputs: ', [input.op.name for input in model.inputs])
 
     # outputs:  ['dense_4/Sigmoid']
     print('outputs: ', [output.op.name for output in model.outputs])
 
-    # save the model
+    # saved model format
     model.save(SAVED_MODEL_PATH)
 
     #save model to frozen protobuf
