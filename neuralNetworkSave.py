@@ -143,7 +143,7 @@ def main():
     print("\nTest loss: {}, test accuracy: {}".format(test_error, 100*test_accuracy))
 
 
-    # inputs:  ['dense_input']
+    # inputs:  ['dense_input'] (not sure about all of that yet)
     print('inputs: ', [input.op.name for input in model.inputs])
 
     # outputs:  ['dense_4/Sigmoid']
@@ -152,6 +152,7 @@ def main():
     # save the model
     model.save(SAVED_MODEL_PATH)
 
+    #save model to frozen protobuf
     frozen_graph = freeze_session(tf.keras.backend.get_session(), output_names=[out.op.name for out in model.outputs])
     tf.train.write_graph(frozen_graph, './', 'xor.pbtxt', as_text=True)
     tf.train.write_graph(frozen_graph, './', 'xor.pb', as_text=False)
