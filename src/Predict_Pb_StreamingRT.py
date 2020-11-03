@@ -6,17 +6,19 @@ import matplotlib.pyplot as plt
 import soundcard as sc
 from struct import unpack
 
+# the following comments show the different protobuf files and configurations (input/outpul layer, patch size) I used as well as the errors I got.
+
 # works with the msd-musicnn.pb file from Essentia homepage
 # --> (patchSize: 187, inputLayer = 'model/Placeholder', output_layer = 'model/Sigmoid'
 
 
 # kerasModel_essentia.pb compiles with no errors, but predictions are always the same (e.g. [[0.0023], [0.0023]] (mel Bands in preprocess computed with essentia)
-# (exported to .pb NOT with Alonsos keras-onnx-tensorflow repository)
+# (exported to .pb NOT with keras-onnx-tensorflow repository)
 # --> input_layer = 'conv2d_input', output_layer = 'training/Adam/dense_1/bias/v'
 
 
-# does not work with kerasModel_AlonsoConverter.pb
-# (exported to .pb with keras-onnx-tensorflow repository)
+# does not work with kerasModel_h5-onx-pb-Converter.pb
+# (exported to .pb with the keras-onnx-tensorflow repository)
 # --> input_layer = 'dense_1/kernel_tf_0_ab98e656', output_layer = 'training/Adam/dense_1/bias/v'
 #  File "/home/maedd/.local/lib/python3.6/site-packages/essentia/__init__.py", line 148, in run
 #    return _essentia.run(gen)
@@ -39,11 +41,10 @@ from struct import unpack
 # RuntimeError: TensorflowPredict: Error running the Tensorflow session. You must feed a value for placeholder tensor 'model/Placeholder_1' with dtype float and shape [?,2]
 # 	 [[{{node model/Placeholder_1}}]]
 
-
-
-modelName = '/media/maedd/USB DISK/Backup/10_30_2020/Files/Protobufs/musicnn_drums_essentia.pb'
+modelName = '/home/maedd/Documents/BThesis/protobuf_h5_files/musicnn_drums_librosa.pb'
 input_layer = 'model/Placeholder'
 output_layer = 'gradients/model/batch_normalization/cond/FusedBatchNorm/Switch_2_grad/cond_grad'
+
 
 msd_labels = ['snare','kick']
 nLabels = len(msd_labels)
@@ -130,3 +131,7 @@ pool.clear()
 with sc.all_microphones(include_loopback=True)[0].recorder(samplerate=sampleRate) as mic:
     while True:
         callback(mic.record(numframes=bufferSize).mean(axis=1))
+
+
+
+
