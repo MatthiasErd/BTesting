@@ -77,6 +77,7 @@ pk.amplitudes   >> rms.array
 rms.rms         >> (pool, 'peaks')
 
 
+# runs the prediction
 def callback(data):
 
     # update audio buffer
@@ -88,6 +89,7 @@ def callback(data):
 
     return pool[output_layer]
 
+# detects peaks
 def peakPicking(data):
 
     # update audio buffer
