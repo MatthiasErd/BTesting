@@ -19,7 +19,7 @@ nLabels = len(adt_labels)
 
 sampleRate = 16000
 frameSize=512
-hopSize=128
+hopSize=256
 numberBands = 96
 
 # model parameters
