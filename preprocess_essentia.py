@@ -18,11 +18,14 @@ mel = []
 
 w = Windowing(normalized=False)
 spectrum = Spectrum()  # FFT() would return the complex FFT, here we just want the magnitude spectrum
-melBands = MelBands(numberBands=96, sampleRate=16000,
+melBands = MelBands(numberBands=8, sampleRate=16000,
                highFrequencyBound=16000 // 2,
                inputSize=512,
                weighting='linear', normalize='unit_tri',
                warpingFormula='slaneyMel')
+
+shift = UnaryOperator(shift=1, scale=10000)
+comp = UnaryOperator(type='log10')
 
 
 def compute_audio_repr(audio_file, audio_repr_file):
@@ -39,7 +42,7 @@ def compute_audio_repr(audio_file, audio_repr_file):
 
         if len(audio) >= 1024:
 
-            for frame in FrameGenerator(audio[:1024], frameSize=512, hopSize=config['hop'],
+            for frame in FrameGenerator(audio, frameSize=512, hopSize=config['hop'],
                                         startFromZero=True):
                 mel_bands = melBands(spectrum(w(frame)))
                 mel.append(mel_bands.tolist())
