@@ -17,16 +17,12 @@ DEBUG = True
 mel = []
 
 w = Windowing(normalized=False)
-spectrum = Spectrum()  # FFT() would return the complex FFT, here we just want the magnitude spectrum
-melBands = MelBands(numberBands=8, sampleRate=16000,
+spectrum = Spectrum(size=1024)  # FFT() would return the complex FFT, here we just want the magnitude spectrum
+melBands = MelBands(numberBands=96, sampleRate=16000,
                highFrequencyBound=16000 // 2,
                inputSize=512,
                weighting='linear', normalize='unit_tri',
                warpingFormula='slaneyMel')
-
-shift = UnaryOperator(shift=1, scale=10000)
-comp = UnaryOperator(type='log10')
-
 
 def compute_audio_repr(audio_file, audio_repr_file):
 
@@ -40,14 +36,13 @@ def compute_audio_repr(audio_file, audio_repr_file):
 
     elif config['spectrogram_type'] == 'mel':
 
-        if len(audio) >= 1024:
-
-            for frame in FrameGenerator(audio, frameSize=512, hopSize=config['hop'],
+        if (len(audio) > 1024):
+            for frame in FrameGenerator(audio, frameSize=config['n_fft'], hopSize=config['hop'],
                                         startFromZero=True):
                 mel_bands = melBands(spectrum(w(frame)))
-                mel.append(mel_bands.tolist())
-
-            audio_repr = np.array(mel)
+                mel.append(mel_bands)
+            audio_repr = essentia.array(mel)
+            mel.clear()
 
         else:
             print("sample to small", audio_file)
