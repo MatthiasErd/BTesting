@@ -134,7 +134,7 @@ with sc.all_microphones(include_loopback=True)[0].recorder(samplerate=sampleRate
             # run prediction
             callback(data)
 
-            # sort and print predictions
+            # print last prediction
             list = pool[output_layer][-1, :].T.tolist()
             list = np.array(list)
 
