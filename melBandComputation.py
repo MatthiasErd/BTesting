@@ -17,7 +17,7 @@ mel_librosa = []
 
 # instantiate the essentia analysing algorithms
 w = Windowing(normalized=False)
-spectrum = Spectrum(size=numSamplesToCompute)  # FFT() would return the complex FFT, here we just want the magnitude spectrum
+spectrum = Spectrum()  # FFT() would return the complex FFT, here we just want the magnitude spectrum
 melBands = MelBands(numberBands=numberBands, sampleRate=sampleRate,
                highFrequencyBound=sampleRate // 2,
                inputSize=frameSize,

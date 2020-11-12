@@ -17,7 +17,7 @@ DEBUG = True
 mel = []
 
 w = Windowing(normalized=False)
-spectrum = Spectrum(size=1024)  # FFT() would return the complex FFT, here we just want the magnitude spectrum
+spectrum = Spectrum()  # FFT() would return the complex FFT, here we just want the magnitude spectrum
 melBands = MelBands(numberBands=96, sampleRate=16000,
                highFrequencyBound=16000 // 2,
                inputSize=512,
