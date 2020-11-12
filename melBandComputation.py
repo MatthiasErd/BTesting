@@ -40,11 +40,12 @@ if (len(audio) > 1024):
 mel_bands2 = librosa.feature.melspectrogram(audio[:numSamplesToCompute], sr=sampleRate, hop_length=hopSize, n_fft=frameSize, n_mels=numberBands).T
 mel_librosa = mel_bands2.astype(np.float16)
 
-# print results of librosa/essentia computation
-print(mel_essentia.shape)
-print(np.mean(mel_essentia))
-print(mel_librosa.shape)
-print(np.mean(mel_librosa))
+# print results of essentia/librosa computation
+print(mel_essentia.shape)  # prints: "(9, 96)"
+print(np.mean(mel_essentia)) # prints: "3.219"
+
+print(mel_librosa.shape)  # prints: "(10, 96)"
+print(np.mean(mel_librosa)) #prints: "3.688"
 
 
 
