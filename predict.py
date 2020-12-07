@@ -3,10 +3,11 @@ from essentia import Pool, run
 from time import time
 import numpy as np
 
-# musicnn_drums_librosa.pb pathcsize = 5 works, tendiert aber mehr zu snare predictions
 
 modelName = '/home/maedd/Documents/BThesis/pbFiles/drumClassifier.pb'
-#modelName = '/home/maedd/Desktop/Finals/audio/12_01_2020/drums_Librosa.pb'
+
+filename = '/home/maedd/Music/Experiments/FirstDrumSamples/Snare/Miscellaneous Snare (6196).wav'
+
 input_layer = 'model/Placeholder'
 output_layer = 'model/Sigmoid'
 
@@ -25,7 +26,6 @@ numberBands = 96
 # model parameters
 patchSize = 2
 
-filename = '/home/maedd/Music/Experiments/FirstDrumSamples/Snare/Miscellaneous Snare (6196).wav'
 
 # Algorithms for mel-spectrogram computation
 audio = MonoLoader(filename=filename, sampleRate=sampleRate)
