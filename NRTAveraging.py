@@ -5,12 +5,13 @@ import numpy as np
 
 # musicnn_drums_librosa.pb pathcsize = 5 works, tendiert aber mehr zu snare predictions
 
-modelName = '/home/maedd/Documents/BThesis/data/musicnn_drums_Librosa.pb'
+modelName = '/home/maedd/Documents/BThesis/data/drums[1024].pb'
+#modelName = '/home/maedd/Desktop/Finals/audio/12_01_2020/drums_Librosa.pb'
 input_layer = 'model/Placeholder'
 output_layer = 'model/Sigmoid'
 
 
-msd_labels = ['snare','kick']
+msd_labels = ['snare','hihat', 'kick']
 
 weighting='linear'
 warpingFormula='slaneyMel'
@@ -22,9 +23,9 @@ hopSize=256
 numberBands = 96
 
 # model parameters
-patchSize = 3
+patchSize = 2
 
-filename = '/home/maedd/Music/Samples/Tim/Kick/Miscellaneous Kick (795).wav'
+filename = '/home/maedd/Music/Experiments/FirstDrumSamples/Snare/Miscellaneous Snare (6196).wav'
 
 # Algorithms for mel-spectrogram computation
 audio = MonoLoader(filename=filename, sampleRate=sampleRate)
@@ -97,16 +98,39 @@ run(audio)
 print(pool[output_layer])
 #print(pool[output_layer][-1, :].T.tolist())
 
-print('Prediction time: {:.2f}s'.format(time() - start_time))
+
 
 print('Most predominant tags:')
 
-list = pool[output_layer][-1, :].T.tolist()
-list = np.array(list)
+list = []
+
+test = pool[output_layer].T.tolist()
+
+snare = np.mean(test[0])
+hihat = np.mean(test[1])
+kick = np.mean(test[2])
+
+print(snare)
+print(hihat)
+print(kick)
+
+list.append(snare)
+list.append(hihat)
+list.append(kick)
+
+prediction = list.index(max(list))
 
 
-for i, l  in enumerate(list.argsort()[-2:][::-1]):
-    print('{}: {}'.format(i, msd_labels[l]))
+print(msd_labels[prediction])
+
+print('Prediction time: {:.2f}s'.format(time() - start_time))
+
+
+
+
+
+
+
 
 
 

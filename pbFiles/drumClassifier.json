@@ -1,0 +1,42 @@
+{
+  "name": "drum sample classifier",
+  "type": "multi-class classifier using MTT MusiCNN",
+  "link": "",
+  "version": "1",
+  "description": "classification of drum samples",
+  "author": "Matthias Erdmann",
+  "email": "mt.erdmann@web.de",
+  "release_date": "2020-12-07",
+  "framework": "tensorflow",
+  "framework_version": "1.15.0",
+  "classes": [
+    "snare", "hihat", "kick"],
+  "model_types": [
+    "frozen_model"],
+  "dataset": {
+    "name": "private dataset",
+    "size": "2800 samples for each class",
+    "metrics": {
+
+    }
+  },
+  "schema": {
+    "inputs": [
+      {
+        "name": "model/Placeholder",
+        "type": "float",
+        "shape": [2, 96]
+      }
+    ],
+    "outputs": [
+      {
+        "name": "model/Sigmoid",
+        "type": "float",
+        "shape": [1, 3],
+        "op": "Sigmoid"
+      }
+    ]
+  },
+  "citation": "@article{alonso2020tensorflow,\ntitle={TensorFlow Audio Models in Essentia},\nauthor={Alonso-Jim{\\'e}nez, Pablo and Bogdanov, Dmitry and Pons, Jordi and Serra, Xavier},\njournal={ICASSP 2020},\nyear={2020}\n}"
+}
+
