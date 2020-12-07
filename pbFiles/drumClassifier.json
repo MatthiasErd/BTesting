@@ -15,7 +15,7 @@
     "frozen_model"],
   "dataset": {
     "name": "private dataset",
-    "size": "2800 samples for each class",
+    "size": "4000 samples for each class",
     "metrics": {
 
     }
